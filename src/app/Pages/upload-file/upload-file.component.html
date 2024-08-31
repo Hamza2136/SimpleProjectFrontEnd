@@ -1,0 +1,66 @@
+<!-- Upload File -->
+<div class="container mt-5">
+  <h2 class="mb-4">Upload Files</h2>
+  <div class="upload-area" (dragover)="allowDrop($event)" (dragleave)="allowDrop($event)" (drop)="onDrop($event)">
+    <p>Drag & Drop your files here or click to select files</p>
+    <input #fileInput type="file" (change)="onFilesSelected($event)" multiple hidden>
+    <button type="button" class="btn btn-primary mt-3" (click)="browseFiles()">Browse Files</button>
+  </div>
+
+  <div *ngIf="filePreviews.length > 0" class="mt-4">
+    <div *ngFor="let file of filePreviews; let i = index" class="card file-card">
+      <div class="card-body">
+        <div>
+          <h5 class="card-title">{{ file.name }}</h5>
+          <p class="card-text">{{ (file.size / 1024).toFixed(2) }} KB</p>
+        </div>
+        <button type="button" class="btn btn-link text-danger" (click)="removeFile(i)">Remove</button>
+      </div>
+    </div>
+  </div>
+  <p *ngIf="filePreviews.length === 0" class="text-muted mt-4">No file selected</p>
+
+  <button type="button" class="btn btn-success mt-3" (click)="onSubmit()">Submit</button>
+</div>
+
+<!-- Login Modal -->
+<div class="modal" tabindex="-1" [ngClass]="{'d-block': showModal}" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Login</h5>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form">
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" id="email" formControlName="email">
+            <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
+              <span style="color: red;" *ngIf="form.controls['email'].hasError('required')">
+                Email is required!
+              </span>
+              <span style="color: red;" *ngIf="form.controls['email'].hasError('email')">
+                Please enter a valid email address!
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" formControlName="password">
+            <div *ngIf="form.controls['password'].invalid && form.controls['password'].touched">
+              <span style="color: red;" *ngIf="form.controls['password'].hasError('required')">
+                Password is required!
+              </span>
+              <span style="color: red;" *ngIf="form.controls['password'].hasError('minlength')">
+                Password must be at least 6 characters long!
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="onLogin()">Login</button>
+      </div>
+    </div>
+  </div>
+</div>

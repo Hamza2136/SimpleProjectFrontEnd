@@ -1,0 +1,60 @@
+// upload files css
+.upload-area {
+  border: 2px dashed #007bff;
+  border-radius: 6px;
+  padding: 30px;
+  text-align: center;
+  color: #6c757d;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.upload-area.dragover {
+  background-color: #f0f8ff;
+}
+
+.file-card {
+  margin-bottom: 15px;
+}
+
+.file-card .card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.file-card .text-danger {
+  cursor: pointer;
+}
+.modal {
+  display: none;
+}
+
+// login modal css
+.modal.d-block {
+  display: block;
+  position: fixed;
+  z-index: 1050;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-dialog {
+  margin: 1.75rem auto;
+}
+
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  outline: 0;
+}

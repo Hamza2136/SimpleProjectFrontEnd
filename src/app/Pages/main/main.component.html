@@ -1,0 +1,141 @@
+<div class="row">
+    <!-- Full Form Html  -->
+    <div [ngClass]="isEditForm ? 'col-8' :'col-12'">
+        <div class="card">
+            <div class=" card-header" style="background-color: #343a40; align-items: center;">
+                <div class="row">
+                    <div class=" col-8" style="color: white; font-size: large; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-weight: bolder;">
+                        Data List
+                    </div>
+                    <div class="col-4 text-end">
+                        <!-- Button for going to other page -->
+                        <button class="btn btn-primary mx-2" (click)="gotonextpage()">Upload Link</button>
+                        <!-- Button for opening other half of the page for adding or updating data -->
+                        <button class=" btn" style="background-color: #007bff; color: white;" (click)="isEditForm=true">Add Data</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Serial Number</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Upload Link</th>
+                            <th>Expiry Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    @if(dataList && dataList.length > 0){
+                        <tbody>
+                            <tr *ngFor="let data of dataList;">
+                                <td>{{data.serialNumber}}</td>
+                                <td>{{data.name}}</td>
+                                <td>{{data.email}}</td>
+                                <td>{{data.password}}</td>
+                                <td>{{data.uploadLink}}</td>
+                                <td>{{ data.expiryDate | date:'dd-MM-yyyy HH:mm a' }}</td>
+                                <td>
+                                    <button class="btn btn-sm mx-2" style="background-color: #343a40; color:white;"
+                                        (click)="onEdit(data)">Edit</button>
+                                    <button class="btn btn-sm btn-danger"
+                                        (click)="onDelete(data.serialNumber)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        }
+                        @else {
+                        <tbody>
+                            <tr>
+                                <td class="text-center" colspan="7">No data available</td>
+                            </tr>
+                        </tbody>
+                        }
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Side Form Html -->
+    <div class="col-4" *ngIf="isEditForm">
+        <div class="card">
+            <div class="card-header text-center" style="background-color: #343a40;">
+                <div class="row">
+                    <div class="text-start col-8" style="color: white; font-size: large; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-weight: bolder;">
+                        @if(!isEditMode){
+                        New Data
+                        }@else {
+                        Update Data
+                        }
+                    </div>
+                    <div class="col-4 text-end">
+                        <!-- Button for closing the half form  -->
+                        <button (click)="isEditForm=false;" class=" btn" style="background-color: #007bff; color: white;">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form [formGroup]="form">
+                    <div class="col-12">
+                        <label>Serial Number</label>
+                        <input formControlName="serialNumber" [(ngModel)]="dataObj.serialNumber" type="text" class="form-control">
+                        <div *ngIf="form.controls['serialNumber'].invalid && form.controls['serialNumber'].touched">
+                            <span style="color: red;" *ngIf="form.controls['serialNumber'].hasError('required')">
+                                Serial Number is required!
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label>Name</label>
+                        <input formControlName="name" [(ngModel)]="dataObj.name" type="text" class="form-control">
+                        <div *ngIf="form.controls['name'].invalid && form.controls['name'].touched">
+                            <span style="color: red;" *ngIf="form.controls['name'].hasError('required')">
+                                Name is required!
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label>Email</label>
+                        <input formControlName="email" [(ngModel)]="dataObj.email" type="email" class="form-control">
+                        <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
+                            <span style="color: red;" *ngIf="form.controls['email'].hasError('required')">
+                                Email is required!
+                            </span>
+                            <span style="color: red;" *ngIf="form.controls['email'].hasError('email')">
+                                Please enter a valid email address!
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label>Password</label>
+                        <input formControlName="password" [(ngModel)]="dataObj.password" type="password" class="form-control">
+                        <div *ngIf="form.controls['password'].invalid && form.controls['password'].touched">
+                            <span style="color: red;" *ngIf="form.controls['password'].hasError('required')">
+                                Password is required!
+                            </span>
+                            <span style="color: red;" *ngIf="form.controls['password'].hasError('minlength')">
+                                Password must be at least 6 characters long!
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col-12 text-center">
+                            <!-- Buttons for save and reset  -->
+                            <ng-container *ngIf="!isEditMode">
+                                <button class="btn btn-secondary" (click)="onReset()">Reset</button>
+                                <button class="btn btn-success mx-2" (click)="onSave()">Save</button>
+                            </ng-container>
+                            <!-- Buttons for update and cancel  -->
+                            <ng-container *ngIf="isEditMode">
+                                <button style="color: black;" class="btn btn-secondary" (click)="onReset()">Cancel</button>
+                                <button class="btn btn-warning mx-2" (click)="onUpdate(dataObj.serialNumber)">Update</button>
+                            </ng-container>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
